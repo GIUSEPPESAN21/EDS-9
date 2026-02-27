@@ -73,6 +73,16 @@
             border: 1px solid #e2e8f0;
         }
 
+        /* Subcaja de preguntas para investigación primaria */
+        .question-box {
+            background: linear-gradient(to right, #e0e7ff, #eef2ff);
+            border: 1px solid #c7d2fe;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-top: 0.75rem;
+            width: 100%;
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -216,7 +226,7 @@
                             <h4 class="font-bold text-slate-800 text-sm">Vectores de Inclusión y Empleos Verdes</h4>
                             <span class="text-2xl">🌱</span>
                         </div>
-                        <p class="text-xs text-slate-700 leading-relaxed mb-2">El ODS 9 actúa como un "habilitador" económico. La modernización no solo mitiga el daño, sino que abre fuerzas económicas dinámicas. La adopción de tecnologías limpias (como el hidrógeno verde y las energías renovables) fomenta la competitividad industrial y la creación de nuevos nichos de mercado y "empleos verdes", elementos esenciales para la industrialización inclusiva.</p>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">El ODS 9 actúa como un "habilitador" económico. La modernización no solo mitiga el daño, sino que abre fuerzas económicas dinámicas. La adopción de tecnologías limpias fomenta la competitividad industrial y la creación de "empleos verdes", esenciales para la industrialización inclusiva.</p>
                         <span class="citation">Fuente: (Documento Antecedente INDH, PNUD 2024)</span>
                     </div>
                 </div>
@@ -238,73 +248,87 @@
                             <h4 class="font-bold text-slate-800 text-sm">NDC Colombia y Matriz Energética</h4>
                             <span class="font-bold text-xl leading-none">CO</span>
                         </div>
-                        <p class="text-xs text-slate-700 leading-relaxed mb-2">La Contribución Determinada a Nivel Nacional (NDC) obliga a reducir un 51% los GEI para 2030. Esta transición es apoyada por el Plan Energético 2020-2050 y la ventaja competitiva de contar con una matriz eléctrica altamente hidroeléctrica, facilitando la descarbonización de procesos si se sustituyen materiales fósiles.</p>
-                        <span class="citation">Fuente: (IEA Energy Policy Review, 2023; PNUD, 2024)</span>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">La Contribución Determinada a Nivel Nacional (NDC) obliga a reducir un 51% los GEI para 2030. Esta transición es apoyada por el Plan Energético 2020-2050 y la ventaja de contar con una matriz hidroeléctrica, facilitando descarbonizar procesos si se sustituyen fósiles.</p>
+                        <span class="citation">Fuente: (IEA Energy Policy Review, 2023)</span>
                     </div>
                 </div>
 
-                <!-- Nodos Individuales: Investigación Primaria (Campo) -->
-                <div class="mt-6 node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-4 rounded-xl shadow-sm mr-4 lg:mr-8" data-group="primaria">
+                <!-- ================= NODOS ENRIQUECIDOS: INVESTIGACIÓN PRIMARIA ================= -->
+                
+                <div class="mt-6 node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-5 rounded-xl shadow-sm mr-4 lg:mr-8" data-group="primaria">
                     <div class="text-right flex flex-col items-end">
-                        <div class="flex items-center justify-end gap-3 mb-2">
+                        <div class="flex items-center justify-end gap-3 mb-2 w-full">
                             <div>
-                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Entrevista Académica a Profundidad</p>
-                                <h4 class="font-bold text-slate-800 text-sm">Prof. F. Salcedo & Prof. J. Medina</h4>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Autoridad Técnico-Científica</p>
+                                <h4 class="font-bold text-slate-800 text-sm">Prof. J. Medina & Prof. F. Salcedo</h4>
                             </div>
                             <span class="text-3xl">👨‍🔬</span>
                         </div>
-                        <p class="text-xs text-slate-700 leading-relaxed">Indagación técnica sobre fenómenos de transporte, ingeniería química y mecánica. Validación de la relación estructura-propiedad de biopolímeros frente a infraestructura convencional.</p>
+                        <p class="text-xs text-slate-700 leading-relaxed"><strong>Ing. Mecánica e Ing. Química (Uniandes).</strong> Indagación técnica indispensable en reología, nanocompuestos y fenómenos de transporte para validar cómo la relación estructura-propiedad afecta la infraestructura actual.</p>
+                        
+                        <!-- Caja de preguntas clave -->
+                        <div class="question-box text-right">
+                            <span class="text-[9px] font-bold text-indigo-800 uppercase tracking-widest block mb-1">Eje de Indagación Técnico</span>
+                            <p class="text-[11px] text-indigo-900 font-medium italic leading-snug">"Desde la reología, ¿en qué punto se vuelve más eficiente 'rehabilitar' una infraestructura existente que insistir en adaptarla a un biopolímero para el que no fue diseñada?"</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-4 rounded-xl shadow-sm" data-group="primaria">
+                <div class="node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-5 rounded-xl shadow-sm" data-group="primaria">
                     <div class="text-right flex flex-col items-end">
-                        <div class="flex items-center justify-end gap-3 mb-2">
+                        <div class="flex items-center justify-end gap-3 mb-2 w-full">
                             <div>
-                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Triangulación Operativa (Escala)</p>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Viabilidad Operativa y Escala</p>
                                 <h4 class="font-bold text-slate-800 text-sm">Directivo Grupo Bimbo</h4>
                             </div>
                             <span class="text-3xl">🏭</span>
                         </div>
-                        <p class="text-xs text-slate-700 leading-relaxed">Representa la perspectiva de consumo a escala. Validación logística, operativa y económica de sustituir materiales en cadenas de suministro intensivas en energía.</p>
+                        <p class="text-xs text-slate-700 leading-relaxed">Representa la perspectiva de consumo masivo. Validación de métricas operativas y riesgos logísticos (físicos y de cadena de suministro) de sustituir EPS en cadenas intensivas en energía.</p>
+                        
+                        <div class="question-box text-right">
+                            <span class="text-[9px] font-bold text-indigo-800 uppercase tracking-widest block mb-1">Eje de Indagación Operativo</span>
+                            <p class="text-[11px] text-indigo-900 font-medium italic leading-snug">"Al discutir rehabilitar infraestructuras versus líneas nuevas más limpias, ¿qué pesa más en su decisión: CAPEX, riesgo tecnológico, retorno esperado o presión regulatoria?"</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-4 rounded-xl shadow-sm mr-4 lg:mr-4" data-group="primaria">
+                <div class="node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-5 rounded-xl shadow-sm mr-4 lg:mr-4" data-group="primaria">
                     <div class="text-right flex flex-col items-end">
-                        <div class="flex items-center justify-end gap-3 mb-2">
+                        <div class="flex items-center justify-end gap-3 mb-2 w-full">
                             <div>
-                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Ecosistema Emprendedor</p>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Innovación y Ecosistema Emprendedor</p>
                                 <h4 class="font-bold text-slate-800 text-sm">Felipe Montes (Kravata)</h4>
                             </div>
                             <span class="text-3xl">🚀</span>
                         </div>
-                        <p class="text-xs text-slate-700 leading-relaxed">Análisis sobre la agilidad de las startups para pivotar hacia nuevos nichos de mercado sostenibles esquivando las barreras de crédito de las Pymes.</p>
+                        <p class="text-xs text-slate-700 leading-relaxed"><strong>Prof. Ing. Industrial (Uniandes).</strong> Análisis del rol de las Pymes como motores de la Meta 9.4 y su agilidad para adoptar nichos verdes, a pesar de que el 46% carece de acceso a crédito formal.</p>
+
+                        <div class="question-box text-right">
+                            <span class="text-[9px] font-bold text-indigo-800 uppercase tracking-widest block mb-1">Eje de Indagación de Mercado</span>
+                            <p class="text-[11px] text-indigo-900 font-medium italic leading-snug">"Para una Pyme que quiera sustituir materiales plásticos en empaquetado, ¿cuál suele ser el cuello de botella: conocimiento técnico, acceso a proveedores, financiamiento o clientes?"</p>
+                        </div>
                     </div>
                 </div>
 
-                <!-- NUEVO NODO: ¿Qué le van a preguntar? (CORREGIDO) -->
+                <!-- NUEVO NODO: Método y Triangulación (Sustituye a "Batería de preguntas" genérica) -->
                 <div class="node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-5 rounded-xl shadow-sm mr-4 lg:mr-8" data-group="primaria">
                     <div class="text-right flex flex-col items-end">
                         <div class="flex items-center justify-end gap-3 mb-3 border-b border-blue-100 pb-2 w-full">
                             <div>
-                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Ejes de Indagación</p>
-                                <h4 class="font-bold text-slate-800 text-sm">Batería de Preguntas Clave</h4>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Diseño Metodológico</p>
+                                <h4 class="font-bold text-slate-800 text-sm">Rigor y Triangulación de Datos</h4>
                             </div>
-                            <span class="text-3xl text-rose-500 drop-shadow-sm font-bold">❓</span>
+                            <span class="text-3xl text-indigo-500 drop-shadow-sm font-bold">🔬</span>
                         </div>
-                        <ul class="text-xs text-slate-700 leading-relaxed space-y-2.5 list-none w-full">
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">Se utilizará la técnica de <strong>Entrevista Semiestructurada a Profundidad</strong>. Se justifica por la necesidad de un intercambio técnico de alto nivel para comprender la ciencia básica detrás de los procesos de manufactura.</p>
+                        <ul class="text-[11px] text-slate-700 leading-relaxed space-y-2 list-none w-full">
                             <li class="flex items-start justify-end gap-2 text-right">
-                                <span><span class="font-bold text-indigo-700">Desempeño Técnico:</span> ¿Cuáles son los desafíos técnicos más críticos al procesar biopolímeros en infraestructura de EPS?</span>
-                                <span class="text-indigo-400 font-black text-sm leading-none mt-0.5">•</span>
+                                <span><span class="font-bold text-indigo-700">Contraste de Datos:</span> La información de campo se triangulará con la reducción del 16% de intensidad de CO₂ (histórica) y las metas vinculantes de la NDC (51%).</span>
+                                <span class="text-indigo-400 font-black text-sm mt-0.5">•</span>
                             </li>
                             <li class="flex items-start justify-end gap-2 text-right">
-                                <span><span class="font-bold text-indigo-700">Meta 9.4 e Innovación:</span> Para lograr el 'desacople', ¿es más viable rehabilitar infraestructuras existentes o diseñar sistemas nuevos?</span>
-                                <span class="text-indigo-400 font-black text-sm leading-none mt-0.5">•</span>
-                            </li>
-                            <li class="flex items-start justify-end gap-2 text-right">
-                                <span><span class="font-bold text-indigo-700">Impacto Social:</span> ¿Cómo la sustitución de materiales modifica la relación de la sociedad con los ecosistemas y el desperdicio?</span>
-                                <span class="text-indigo-400 font-black text-sm leading-none mt-0.5">•</span>
+                                <span><span class="font-bold text-indigo-700">Objetivo del Método:</span> Asegurar que la solución final planteada al HMW cumpla simultáneamente con ser "ambientalmente racional" y "económicamente viable".</span>
+                                <span class="text-indigo-400 font-black text-sm mt-0.5">•</span>
                             </li>
                         </ul>
                     </div>
