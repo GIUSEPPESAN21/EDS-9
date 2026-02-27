@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Contexto Radial: ODS 9.4 - Nivel Avanzado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Fondo tipo lienzo infinito */
+        body {
+            background-color: #f1f5f9;
+            background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Capa de conexiones (Líneas SVG) */
+        #svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Estilos base de las tarjetas individuales */
+        .node-card {
+            position: relative;
+            z-index: 10;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: default;
+        }
+
+        /* Efecto interactivo al pasar el mouse sobre la tarjeta */
+        .node-card:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            z-index: 20;
+        }
+
+        /* Efectos interactivos para las líneas SVG (manejado por JS) */
+        path.connection-line {
+            transition: stroke-width 0.3s ease, stroke 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .image-node {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f8fafc;
+            border: 2px dashed #94a3b8;
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            color: #475569;
+            font-size: 0.8rem;
+            font-weight: 600;
+            box-shadow: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+        }
+
+        .citation {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 0.65rem;
+            color: #64748b;
+            background-color: #f1f5f9;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            display: inline-block;
+            margin-top: 0.75rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-10 relative">
+
+    <!-- Lienzo de Conexiones -->
+    <svg id="svg-layer"></svg>
+
+    <div class="relative z-10 max-w-[1700px] mx-auto pb-20">
+        
+        <!-- Leyenda -->
+        <div class="bg-white/95 backdrop-blur-sm p-4 rounded-xl shadow-md border border-slate-200 mb-12 max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 sticky top-4 z-50">
+            <div>
+                <h2 class="font-bold text-slate-800 text-sm uppercase tracking-wider">Mapa de Contexto Sistémico (Investigación EDS)</h2>
+                <p class="text-[10px] text-slate-500 mt-0.5">Triangulación de problemáticas macro, impacto material y marco regulatorio.</p>
+            </div>
+            <div class="flex gap-4 text-xs font-semibold">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-yellow-100 border-2 border-yellow-400 block shadow-sm"></span>
+                    <span class="text-slate-600">Investigación Secundaria (Docs)</span>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <span class="w-3 h-3 rounded-full bg-blue-100 border-2 border-blue-400 block shadow-sm"></span>
+                    <span class="text-slate-600">Trabajo de Campo (Primaria)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layout en 3 Columnas -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative w-full items-center">
+
+            <!-- ================= COLUMNA IZQUIERDA (Macro e Impacto Ambiental) ================= -->
+            <div class="lg:col-span-4 flex flex-col gap-6 justify-center">
+                
+                <!-- Nodos Individuales: Contexto Macro -->
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-l-4 border-l-yellow-400 p-5 rounded-xl shadow-sm ml-4 lg:ml-8" data-group="secundaria">
+                    <div class="text-left">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">🏭</span>
+                            <h4 class="font-bold text-slate-800 text-sm">Dependencia Fósil y Barrera Financiera</h4>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">La industria manufacturera consume el 37% de la energía mundial (80% fósil). Sin embargo, existe una barrera de capital estructural: el 31% de las pequeñas empresas manufactureras globales carece de líneas de crédito. En América Latina y el Caribe, solo el 46% de las Pymes acceden a financiamiento formal para su reconversión tecnológica.</p>
+                        <span class="citation">Fuente: (Naciones Unidas, 2024; Pacto Mundial, 2021)</span>
+                    </div>
+                </div>
+
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-l-4 border-l-yellow-400 p-5 rounded-xl shadow-sm" data-group="secundaria">
+                    <div class="text-left">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">📉</span>
+                            <h4 class="font-bold text-slate-800 text-sm">La Paradoja del Desacople Insuficiente</h4>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">Aunque la intensidad de CO₂ en manufactura bajó un 16% (2015-2021), las emisiones totales asociadas a energía y procesos industriales marcaron un récord histórico de 37.6 Gt en 2024. Para mantener la temperatura global bajo 2°C con un crecimiento del PIB del 3.5%, las emisiones por unidad de PIB deben caer al menos 5% anual, meta actualmente incumplida.</p>
+                        <span class="citation">Fuente: (UN Statistics Division, 2024; UNCTAD, 2016)</span>
+                    </div>
+                </div>
+
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-l-4 border-l-yellow-400 p-5 rounded-xl shadow-sm ml-4 lg:ml-12" data-group="secundaria">
+                    <div class="text-left">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">📊</span>
+                            <h4 class="font-bold text-slate-800 text-sm">Desigualdad Industrial y Brecha en PMA</h4>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">La transición tecnológica es asimétrica. Según proyecciones globales, los Países Menos Adelantados (PMA) no cumplirán con la meta para 2030 de duplicar la proporción de la manufactura en su PIB. Esto profundiza la brecha estructural y limita severamente su capacidad para adoptar infraestructuras ambientalmente racionales frente a las potencias industrializadas.</p>
+                        <span class="citation">Fuente: (Reporte Extendido ODS 9, ONU 2024)</span>
+                    </div>
+                </div>
+
+                <!-- Nodos Individuales: Impacto Colombia -->
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-l-4 border-l-orange-400 p-5 rounded-xl shadow-sm mt-4 ml-4 lg:ml-4" data-group="secundaria">
+                    <div class="text-left">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">📦</span>
+                            <h4 class="font-bold text-slate-800 text-sm">Escala y Volumen Crítico de Materiales</h4>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">El mercado global de plásticos y empaques presenta un déficit de circularidad severo. Específicamente, el Poliestireno Expandido (EPS) maneja un volumen de 12.5 Millones de toneladas con un CAGR de 5.5%. A nivel nacional, Colombia importa aproximadamente 1,200 Toneladas/año, dificultando la sustitución sin afectar economías de escala.</p>
+                        <span class="citation">Fuente: (Análisis Industria EPS; Informes de Mercado)</span>
+                    </div>
+                </div>
+
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-l-4 border-l-orange-400 p-5 rounded-xl shadow-sm" data-group="secundaria">
+                    <div class="text-left">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">♨️</span>
+                            <h4 class="font-bold text-slate-800 text-sm">Alta Huella de Carbono del Procesamiento</h4>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">La producción de EPS virgen es altamente intensiva en energía, generando entre 3.0 y 3.5 kg de CO₂ por cada kilogramo de material procesado. El reto termodinámico radica en que los sustitutos biodegradables requieren infraestructura especializada para alcanzar capacidades similares de aislamiento térmico y absorción de impactos.</p>
+                        <span class="citation">Fuente: (Evaluación de Ciclo de Vida ACV)</span>
+                    </div>
+                </div>
+
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-l-4 border-l-orange-400 p-5 rounded-xl shadow-sm ml-4 lg:ml-8" data-group="secundaria">
+                    <div class="text-left">
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-2xl">🌊</span>
+                            <h4 class="font-bold text-slate-800 text-sm">Acumulación y Daño Ecosistémico</h4>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">Al ser 100% no biodegradable, la disposición final de los empaques de protección convencionales cruza los límites de los ODS 12 y 14. Genera una severa acumulación volumétrica en rellenos sanitarios y una dispersión incontrolable de micropartículas hacia cuerpos hídricos y suelos agrícolas.</p>
+                        <span class="citation">Fuente: (Programa de las Naciones Unidas para el Medio Ambiente - UNEP, 2025)</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ================= COLUMNA CENTRAL (Problema Puro y HMW) ================= -->
+            <div class="lg:col-span-4 flex flex-col gap-20 justify-center items-center relative py-10">
+                
+                <!-- Nodo Oportunidad de Diseño (HMW) -->
+                <div class="node-card peripheral-node bg-emerald-50 border-t-4 border-t-emerald-500 border border-emerald-200 p-6 rounded-2xl shadow-md w-full max-w-[340px] text-center" id="node-hmw" data-group="hmw">
+                    <span class="text-3xl block mb-3 drop-shadow-sm">💡</span>
+                    <h3 class="font-bold text-emerald-900 text-[11px] uppercase tracking-widest mb-3">Oportunidad de Diseño Investigativa</h3>
+                    <p class="text-[15px] font-medium text-emerald-800 italic leading-relaxed">
+                        "¿Cómo podríamos transformar los sistemas de empaquetado y protección industrial en Colombia, explorando nuevos materiales o rediseños logísticos, para cumplir con el desacople exigido por la Meta 9.4 garantizando el desempeño técnico y la viabilidad a gran escala?"
+                    </p>
+                </div>
+
+                <!-- NODO CENTRAL (Solo Problemática) -->
+                <div class="node-card bg-white border-2 border-red-800 p-8 rounded-3xl shadow-[0_20px_50px_rgba(185,28,28,0.15)] w-full max-w-[400px] relative z-30" id="central-problem">
+                    <div class="absolute -top-5 -right-5 bg-red-600 text-white p-3 rounded-full shadow-lg border-4 border-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <h1 class="text-center text-[10px] font-black text-red-600 uppercase tracking-widest mb-4 border-b-2 border-red-50 pb-3">Problemática Evidenciada (Tensión Central)</h1>
+                    <p class="text-center text-xl font-bold text-slate-800 leading-snug tracking-tight">
+                        Alta intensidad de emisiones y daño ecológico irreversible derivado de los sistemas de empaquetado y protección termo-mecánica en las industrias colombianas.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- ================= COLUMNA DERECHA (Mandatos e Investigación Primaria) ================= -->
+            <div class="lg:col-span-4 flex flex-col gap-6 justify-center">
+
+                <!-- Nodos Individuales: Políticas y ODS -->
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-r-4 border-r-blue-500 p-5 rounded-xl shadow-sm mr-4 lg:mr-12" data-group="secundaria">
+                    <div class="text-right flex flex-col items-end">
+                        <div class="flex items-center justify-end gap-3 mb-2">
+                            <h4 class="font-bold text-slate-800 text-sm">Vectores de Inclusión y Empleos Verdes</h4>
+                            <span class="text-2xl">🌱</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">El ODS 9 actúa como un "habilitador" económico. La modernización no solo mitiga el daño, sino que abre fuerzas económicas dinámicas. La adopción de tecnologías limpias (como el hidrógeno verde y las energías renovables) fomenta la competitividad industrial y la creación de nuevos nichos de mercado y "empleos verdes", elementos esenciales para la industrialización inclusiva.</p>
+                        <span class="citation">Fuente: (Documento Antecedente INDH, PNUD 2024)</span>
+                    </div>
+                </div>
+
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-r-4 border-r-blue-500 p-5 rounded-xl shadow-sm mr-4 lg:mr-8" data-group="secundaria">
+                    <div class="text-right flex flex-col items-end">
+                        <div class="flex items-center justify-end gap-3 mb-2">
+                            <h4 class="font-bold text-slate-800 text-sm">Meta 9.4: Modernización de la Industria</h4>
+                            <span class="text-2xl">🎯</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">El mandato explícito exige: "De aquí a 2030, rehabilitar las infraestructuras y reajustar las industrias para que sean sostenibles, aumentando la eficiencia en el uso de recursos y promoviendo procesos industriales limpios y ambientalmente racionales".</p>
+                        <span class="citation">Fuente: (Resolución 70/1 de la ONU, 2015; Pacto Mundial)</span>
+                    </div>
+                </div>
+
+                <div class="node-card peripheral-node bg-yellow-50 border border-yellow-200 border-r-4 border-r-blue-500 p-5 rounded-xl shadow-sm" data-group="secundaria">
+                    <div class="text-right flex flex-col items-end">
+                        <div class="flex items-center justify-end gap-3 mb-2">
+                            <h4 class="font-bold text-slate-800 text-sm">NDC Colombia y Matriz Energética</h4>
+                            <span class="font-bold text-xl leading-none">CO</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed mb-2">La Contribución Determinada a Nivel Nacional (NDC) obliga a reducir un 51% los GEI para 2030. Esta transición es apoyada por el Plan Energético 2020-2050 y la ventaja competitiva de contar con una matriz eléctrica altamente hidroeléctrica, facilitando la descarbonización de procesos si se sustituyen materiales fósiles.</p>
+                        <span class="citation">Fuente: (IEA Energy Policy Review, 2023; PNUD, 2024)</span>
+                    </div>
+                </div>
+
+                <!-- Nodos Individuales: Investigación Primaria (Campo) -->
+                <div class="mt-6 node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-4 rounded-xl shadow-sm mr-4 lg:mr-8" data-group="primaria">
+                    <div class="text-right flex flex-col items-end">
+                        <div class="flex items-center justify-end gap-3 mb-2">
+                            <div>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Entrevista Académica a Profundidad</p>
+                                <h4 class="font-bold text-slate-800 text-sm">Prof. F. Salcedo & Prof. J. Medina</h4>
+                            </div>
+                            <span class="text-3xl">👨‍🔬</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed">Indagación técnica sobre fenómenos de transporte, ingeniería química y mecánica. Validación de la relación estructura-propiedad de biopolímeros frente a infraestructura convencional.</p>
+                    </div>
+                </div>
+
+                <div class="node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-4 rounded-xl shadow-sm" data-group="primaria">
+                    <div class="text-right flex flex-col items-end">
+                        <div class="flex items-center justify-end gap-3 mb-2">
+                            <div>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Triangulación Operativa (Escala)</p>
+                                <h4 class="font-bold text-slate-800 text-sm">Directivo Grupo Bimbo</h4>
+                            </div>
+                            <span class="text-3xl">🏭</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed">Representa la perspectiva de consumo a escala. Validación logística, operativa y económica de sustituir materiales en cadenas de suministro intensivas en energía.</p>
+                    </div>
+                </div>
+
+                <div class="node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-4 rounded-xl shadow-sm mr-4 lg:mr-4" data-group="primaria">
+                    <div class="text-right flex flex-col items-end">
+                        <div class="flex items-center justify-end gap-3 mb-2">
+                            <div>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Ecosistema Emprendedor</p>
+                                <h4 class="font-bold text-slate-800 text-sm">Felipe Montes (Kravata)</h4>
+                            </div>
+                            <span class="text-3xl">🚀</span>
+                        </div>
+                        <p class="text-xs text-slate-700 leading-relaxed">Análisis sobre la agilidad de las startups para pivotar hacia nuevos nichos de mercado sostenibles esquivando las barreras de crédito de las Pymes.</p>
+                    </div>
+                </div>
+
+                <!-- NUEVO NODO: ¿Qué le van a preguntar? (CORREGIDO) -->
+                <div class="node-card peripheral-node bg-blue-50 border border-blue-200 border-r-4 border-r-indigo-600 p-5 rounded-xl shadow-sm mr-4 lg:mr-8" data-group="primaria">
+                    <div class="text-right flex flex-col items-end">
+                        <div class="flex items-center justify-end gap-3 mb-3 border-b border-blue-100 pb-2 w-full">
+                            <div>
+                                <p class="text-[10px] text-indigo-600 font-bold uppercase mb-0.5 tracking-wider">Ejes de Indagación</p>
+                                <h4 class="font-bold text-slate-800 text-sm">Batería de Preguntas Clave</h4>
+                            </div>
+                            <span class="text-3xl text-rose-500 drop-shadow-sm font-bold">❓</span>
+                        </div>
+                        <ul class="text-xs text-slate-700 leading-relaxed space-y-2.5 list-none w-full">
+                            <li class="flex items-start justify-end gap-2 text-right">
+                                <span><span class="font-bold text-indigo-700">Desempeño Técnico:</span> ¿Cuáles son los desafíos técnicos más críticos al procesar biopolímeros en infraestructura de EPS?</span>
+                                <span class="text-indigo-400 font-black text-sm leading-none mt-0.5">•</span>
+                            </li>
+                            <li class="flex items-start justify-end gap-2 text-right">
+                                <span><span class="font-bold text-indigo-700">Meta 9.4 e Innovación:</span> Para lograr el 'desacople', ¿es más viable rehabilitar infraestructuras existentes o diseñar sistemas nuevos?</span>
+                                <span class="text-indigo-400 font-black text-sm leading-none mt-0.5">•</span>
+                            </li>
+                            <li class="flex items-start justify-end gap-2 text-right">
+                                <span><span class="font-bold text-indigo-700">Impacto Social:</span> ¿Cómo la sustitución de materiales modifica la relación de la sociedad con los ecosistemas y el desperdicio?</span>
+                                <span class="text-indigo-400 font-black text-sm leading-none mt-0.5">•</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Función para renderizar y actualizar líneas SVG
+        function renderConnections() {
+            const svgLayer = document.getElementById('svg-layer');
+            svgLayer.innerHTML = ''; 
+            
+            const centralNode = document.getElementById('central-problem');
+            if (!centralNode) return;
+
+            // Centro del nodo central
+            const centralRect = centralNode.getBoundingClientRect();
+            const scrollX = window.scrollX;
+            const scrollY = window.scrollY;
+
+            const cx = centralRect.left + centralRect.width / 2 + scrollX;
+            const cy = centralRect.top + centralRect.height / 2 + scrollY;
+
+            const peripheralNodes = document.querySelectorAll('.peripheral-node');
+
+            peripheralNodes.forEach((node, index) => {
+                const rect = node.getBoundingClientRect();
+                let tx, ty;
+                
+                // Conectar HMW por debajo o por arriba
+                if (node.id === 'node-hmw') {
+                    tx = rect.left + rect.width / 2 + scrollX;
+                    ty = rect.bottom + scrollY; // Conecta a la base del HMW
+                } 
+                // Lógica Izquierda / Derecha
+                else if (rect.left + rect.width / 2 < centralRect.left) {
+                    tx = rect.right + scrollX;
+                    ty = rect.top + rect.height / 2 + scrollY;
+                } else {
+                    tx = rect.left + scrollX;
+                    ty = rect.top + rect.height / 2 + scrollY;
+                }
+
+                // Generar curva Bezier para simular diagrama radial
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.classList.add('connection-line');
+                path.setAttribute('data-node-index', index);
+                
+                const dx = tx - cx;
+                const dy = ty - cy;
+                
+                let d = '';
+                if (node.id === 'node-hmw') {
+                    d = `M ${cx} ${cy} C ${cx} ${cy - Math.abs(dy)/2}, ${tx} ${ty + Math.abs(dy)/2}, ${tx} ${ty}`;
+                } else {
+                    d = `M ${cx} ${cy} C ${cx + dx/3} ${cy}, ${cx + (dx*2)/3} ${ty}, ${tx} ${ty}`;
+                }
+                
+                path.setAttribute('d', d);
+                path.setAttribute('fill', 'none');
+                
+                // Asignar colores según grupo
+                const isPrimary = node.dataset.group === 'primaria';
+                const isHMW = node.dataset.group === 'hmw';
+                
+                let colorBase = '#cbd5e1'; // Gris por defecto
+                if(isPrimary) colorBase = '#93c5fd'; // Azul
+                if(isHMW) colorBase = '#6ee7b7'; // Verde
+
+                path.setAttribute('stroke', colorBase);
+                path.setAttribute('stroke-width', '2.5');
+                if(isPrimary) path.setAttribute('stroke-dasharray', '6 6');
+
+                svgLayer.appendChild(path);
+            });
+        }
+
+        // Lógica de Interactividad (Hover)
+        function initInteractivity() {
+            const nodes = document.querySelectorAll('.peripheral-node');
+            const centralNode = document.getElementById('central-problem');
+
+            nodes.forEach((node, index) => {
+                node.addEventListener('mouseenter', () => {
+                    // Resaltar nodo central
+                    centralNode.style.transform = 'scale(1.03)';
+                    centralNode.style.boxShadow = '0 25px 50px -12px rgba(185, 28, 28, 0.25)';
+                    
+                    // Atenuar todas las líneas excepto la conectada a este nodo
+                    const lines = document.querySelectorAll('.connection-line');
+                    lines.forEach((line) => {
+                        if (line.getAttribute('data-node-index') == index) {
+                            line.setAttribute('stroke-width', '4.5');
+                            const isPrimary = node.dataset.group === 'primaria';
+                            const isHMW = node.dataset.group === 'hmw';
+                            line.setAttribute('stroke', isPrimary ? '#3b82f6' : (isHMW ? '#059669' : '#d97706'));
+                            line.style.opacity = '1';
+                        } else {
+                            line.style.opacity = '0.15';
+                        }
+                    });
+                });
+
+                node.addEventListener('mouseleave', () => {
+                    // Restaurar nodo central
+                    centralNode.style.transform = 'scale(1)';
+                    centralNode.style.boxShadow = '';
+
+                    // Restaurar líneas SVG
+                    renderConnections();
+                });
+            });
+        }
+
+        // Renderizado inicial
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                renderConnections();
+                initInteractivity();
+            }, 100);
+        });
+        window.addEventListener('resize', renderConnections);
+    </script>
+</body>
+</html>
